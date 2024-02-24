@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:todo_app/form_todo.dart';
+import 'package:todo_app/models/list_todo.dart';
 import 'package:todo_app/models/todo.dart';
-import 'package:todo_app/todo_list.dart';
+import 'package:todo_app/todos_list_widget.dart';
 import 'package:todo_app/todos_local_storage.dart';
 
 void main() {
@@ -38,7 +39,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   TodosLocalStorage todosLocalStorage = TodosLocalStorage();
 
-  List<Todo> todos = [];
+  ListTodo todosCl = ListTodo();
 
 
   Future<void> openTodoForm(BuildContext context) async {
@@ -50,9 +51,8 @@ class _MyHomePageState extends State<MyHomePage> {
       
     );
     if (res != null) {
-      print(res.id);
       setState(() {
-        todos.add(res);
+        todosCl.addTodo(res);
       });
     }
   }
@@ -85,19 +85,9 @@ class _MyHomePageState extends State<MyHomePage> {
                   if (snapshot.hasError) {
                     return Text(snapshot.error.toString());
                   }
-
                   if (snapshot.hasData) {
                     if (snapshot.data == '') {
-                      // todos = [
-                      //   Todo(completed: false, title: 'Купить кота', urgent: false, due: DateTime.utc(2024, 02, 25, 22, 00)),
-                      //   Todo(completed: false, title: 'Сделать КТ', urgent: true, due: DateTime.utc(2024, 02, 27)),
-                      //   Todo(completed: true, title: 'Вымыть машину', urgent: false, due: DateTime.utc(2024, 02, 22, 23, 00)),
-                      //   Todo(completed: false, title: 'Разобраться с DateTime', urgent: true, due: DateTime.utc(2024, 02, 24, 21, 00)),
-                      //   Todo(completed: false, title: 'Разобраться с Flutter', urgent: true, due: DateTime.utc(2024, 02, 26, 23, 00)),
-                      //   Todo(completed: false, title: 'Разобраться с DateTime', urgent: true, due: DateTime.utc(2024, 02, 23, 21, 00)),
-                      //   Todo(completed: false, title: 'Разобраться с JS', urgent: true, due: DateTime.utc(2024, 02, 2, 23, 00))
-                      // ];
-                      return SingleChildScrollView(child: TodoList(todos: todos));
+                      return SingleChildScrollView(child: TodoList(todos: todosCl));
                     } else {
                       return const Text('no todos');
                     }
@@ -114,41 +104,3 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
-
-// Future<void> getDate(BuildContext context) async {
-  //   final res = await showDatePicker(
-  //     context: context,
-  //     firstDate: DateTime.now(),
-  //     lastDate: DateTime.now().add(const Duration(days: 730))
-  //   );
-  // }
-
-
-//  SizedBox(
-        //   width: double.infinity,
-        //   child: Column(
-        //     mainAxisSize: MainAxisSize.max,
-        //     children: [
-        //       const SizedBox(height: 40),
-        //       Padding(
-        //         padding: const EdgeInsets.only(left: 16, right: 16),
-        //         child: TextField(
-        //           decoration: const InputDecoration(
-        //             border: OutlineInputBorder(),
-        //             labelText: 'Задача'
-        //           ),
-        //           controller: TextEditingController(),
-        //           onChanged: (String value) {title = value;},
-        //         ),
-        //       ),
-        //       const SizedBox(height: 20),
-        //       OutlinedButton(
-        //         onPressed: () {getDate(context);},
-        //         child: const Text('Выбрать дату')
-        //         ),
-        //       ElevatedButton(
-        //         onPressed:() {},
-        //         child: const Text('Добавить'))
-        //     ]
-        //   ),
-        // );
