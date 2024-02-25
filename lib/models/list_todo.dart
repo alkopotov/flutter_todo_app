@@ -1,30 +1,54 @@
 import 'package:todo_app/models/todo.dart';
+import 'dart:convert';
+import 'package:todo_app/todos_local_storage.dart';
 
 class ListTodo {
 
-  final List<Todo> _items = [];
+  List<Todo> _items = [];
   
   int get itemsNumber {
     return _items.length;
   }
 
+  
+
   List<Todo> get items {
     return _items;
   }
 
-  void addTodo(Todo todo){
+ Future<void> addTodo(Todo todo) async{
     _items.add(todo);
+    await TodosLocalStorage().writeData(jsonTodos);
   }
 
   List<Todo> getTodos() {
     return _items;
   }
 
-  void deleteTodoById(String id) {
+  Future<void> deleteTodoById(String id) async{
     _items.removeWhere((element) => element.id == id);
+    await TodosLocalStorage().writeData(jsonTodos);
   }
-  void deleteTodoByIndex(ind) {
+
+  Future<void> deleteTodoByIndex(ind) async{
     _items.removeAt(ind);
+    await TodosLocalStorage().writeData(jsonTodos);
+  }
+
+  String get jsonTodos{
+    List todosStr = _items.map((i) => i.toJson()).toList();
+    return jsonEncode(todosStr);
+  }
+
+  void itemsFromJson(json) {
+    _items = [];
+    for (var elem in jsonDecode(json)) {
+      _items.add(Todo.fromJson(elem));
+    }
+  }
+
+  itemsFronJson(List jsonsTodo) {
+    return jsonsTodo.map((tag) => Todo.fromJson(tag)).toList();
   }
 
 }

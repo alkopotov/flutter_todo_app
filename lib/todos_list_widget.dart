@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:todo_app/models/list_todo.dart';
 import 'package:todo_app/models/todo.dart';
+import 'package:todo_app/todos_local_storage.dart';
 
 class TodoList extends StatefulWidget {
   const TodoList({super.key, required this.todos});
@@ -52,6 +53,7 @@ class _TodoListState extends State<TodoList> {
                         onChanged: (bool? value) {
                           setState(() {
                           widget.todos.items[index].switchCompleted();
+                          TodosLocalStorage().writeData(widget.todos.jsonTodos);
                           });
                       }),
                   Text(

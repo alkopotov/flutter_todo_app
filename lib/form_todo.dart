@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:todo_app/models/todo.dart';
 
+
 class FormTodo extends StatefulWidget {
   const FormTodo({super.key});
 
@@ -62,7 +63,7 @@ class _FormTodoState extends State<FormTodo> {
                         ElevatedButton(
                           onPressed: () {
                             if (title != '') {
-                              final Todo todo = Todo(title: title, completed: false, urgent: false, due: normalizeDate(date));
+                              final Todo todo = Todo(id: uuid.v1(),title: title, completed: false, urgent: false, due: normalizeDate(date));
                               Navigator.of(context).pop(todo);
                             }
                           },

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:todo_app/form_todo.dart';
 import 'package:todo_app/models/list_todo.dart';
-import 'package:todo_app/models/todo.dart';
 import 'package:todo_app/todos_list_widget.dart';
 import 'package:todo_app/todos_local_storage.dart';
+
 
 void main() {
   runApp(const MyApp());
@@ -39,7 +39,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   TodosLocalStorage todosLocalStorage = TodosLocalStorage();
 
-  ListTodo todosCl = ListTodo();
+  ListTodo todos = ListTodo();
 
 
   Future<void> openTodoForm(BuildContext context) async {
@@ -48,11 +48,35 @@ class _MyHomePageState extends State<MyHomePage> {
       builder: (context) {
         return const FormTodo();
       }
-      
     );
     if (res != null) {
-      setState(() {
-        todosCl.addTodo(res);
+
+      setState((){
+        todos.addTodo(res);
+        todos.itemsFromJson(todos.jsonTodos);
+
+
+        // var todosObjsJson = jsonDecode(todos.jsonTodos) as List;
+        // ListTodo sample = ListTodo();
+        // for (var e in jsonDecode(todos.jsonTodos)) {
+        //   sample.addTodo(Todo.fromJson(e));
+        // }
+        // print(sample);
+
+        // var newTodos = jsonDecode(todos.jsonTodos).map((e)=> Todo.fromJson(e)).toList();
+        // print(newTodos);
+        // print(todos.itemsFronJson(todosObjsJson));
+
+        // print(todos.jsonTodos);
+        // print(jsonDecode(todos.jsonTodos));
+        // print(todos.itemsFronJson(jsonDecode(todos.jsonTodos)));
+
+        // print(todos.itemsFronJson(jsonDecode(todos.jsonTodos)));
+
+        // print(
+        //   Todo.fromJson(jsonDecode(todos.jsonTodos)[0])
+        // );
+
       });
     }
   }
@@ -72,35 +96,32 @@ class _MyHomePageState extends State<MyHomePage> {
             const SizedBox(height: 20),
              ElevatedButton(
               onPressed: () {openTodoForm(context);},
-              child: const Text('Создать задачу')),
+              child: const Text('Создать задачу')
+              ),
              FutureBuilder(
-              future: todosLocalStorage.readData(),
-              builder: (context, snapshot) {
+                future: todosLocalStorage.readData(),
+                builder: (context, snapshot) {
 
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const CircularProgressIndicator();
-                }
-
-                if (snapshot.connectionState == ConnectionState.done) {
-                  if (snapshot.hasError) {
-                    return Text(snapshot.error.toString());
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const CircularProgressIndicator();
                   }
-                  if (snapshot.hasData) {
-                    if (snapshot.data == '') {
-                      return SingleChildScrollView(child: TodoList(todos: todosCl));
-                    } else {
-                      return const Text('no todos');
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    if (snapshot.hasError) {
+                      return Text(snapshot.error.toString());
                     }
-                  } 
-
+                    if (snapshot.hasData) {
+                      if (snapshot.data != '') {
+                        todos.itemsFromJson(snapshot.data);
+                      }
+                      return SingleChildScrollView(child: TodoList(todos: todos));
+                    }
                 }
                 return const Text('Unknown error');
-              }
+                }
               ),
-          
-          ]
+            ]
           ),
-      ),
+        ),
     );
   }
 }

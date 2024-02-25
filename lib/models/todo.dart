@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 import 'package:intl/intl.dart' as intl;
 
+
 var uuid =  const Uuid();
 
 class Todo {
@@ -10,10 +11,11 @@ class Todo {
     required this.title,
     required this.completed,
     required this.due,
-    required this.urgent
+    required this.urgent,
+    required this.id,
   });
 
-  String id = uuid.v1();
+  String id;
   String title;
   bool completed;
   DateTime due;
@@ -63,4 +65,21 @@ class Todo {
     // return '$title через $daysLeft дней';
   }
 
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'title': title,
+      'completed': completed,
+      'due': due.toIso8601String(),
+      'urgent': urgent,
+    };
+  }
+
+  factory Todo.fromJson(Map<String, dynamic> json) => Todo(
+    title: json['title'],
+    id: json['id'],
+    completed: json['completed'],
+    due: DateTime.parse(json['due']),
+    urgent: json['urgent']
+  );
 }
