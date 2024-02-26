@@ -14,19 +14,6 @@ class TodoList extends StatefulWidget {
 
 class _TodoListState extends State<TodoList> {
 
-  String todoText(Todo todo) {
-    return '';
-  }
-
-  Color todoColor(Todo todo) {
-  
-    return Colors.red;
-  }
-
-  Color todoTextColor(Todo todo) {
-    return Colors.white;
-  }
-
   @override
   Widget build(BuildContext context) {
     return SizedBox(
