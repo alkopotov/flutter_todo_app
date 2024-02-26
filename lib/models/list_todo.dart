@@ -46,9 +46,4 @@ class ListTodo {
       _items.add(Todo.fromJson(elem));
     }
   }
-
-  itemsFronJson(List jsonsTodo) {
-    return jsonsTodo.map((tag) => Todo.fromJson(tag)).toList();
-  }
-
 }

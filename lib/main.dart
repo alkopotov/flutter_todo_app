@@ -41,6 +41,12 @@ class _MyHomePageState extends State<MyHomePage> {
 
   ListTodo todos = ListTodo();
 
+  Future<void> addTodo(todo) async {
+    await todos.addTodo(todo);
+    setState((){
+        todos.itemsFromJson(todos.jsonTodos);
+      });
+  }
 
   Future<void> openTodoForm(BuildContext context) async {
     final res = await showModalBottomSheet(
@@ -50,34 +56,7 @@ class _MyHomePageState extends State<MyHomePage> {
       }
     );
     if (res != null) {
-
-      setState((){
-        todos.addTodo(res);
-        todos.itemsFromJson(todos.jsonTodos);
-
-
-        // var todosObjsJson = jsonDecode(todos.jsonTodos) as List;
-        // ListTodo sample = ListTodo();
-        // for (var e in jsonDecode(todos.jsonTodos)) {
-        //   sample.addTodo(Todo.fromJson(e));
-        // }
-        // print(sample);
-
-        // var newTodos = jsonDecode(todos.jsonTodos).map((e)=> Todo.fromJson(e)).toList();
-        // print(newTodos);
-        // print(todos.itemsFronJson(todosObjsJson));
-
-        // print(todos.jsonTodos);
-        // print(jsonDecode(todos.jsonTodos));
-        // print(todos.itemsFronJson(jsonDecode(todos.jsonTodos)));
-
-        // print(todos.itemsFronJson(jsonDecode(todos.jsonTodos)));
-
-        // print(
-        //   Todo.fromJson(jsonDecode(todos.jsonTodos)[0])
-        // );
-
-      });
+      addTodo(res);
     }
   }
 

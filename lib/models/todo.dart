@@ -59,10 +59,6 @@ class Todo {
       case 2: return '$title послезавтра';
       default: return '$title - ${intl.DateFormat('dd/MM').format(due)}';
     }
-    // if (daysLeft > 4 && daysLeft < 20) return '$title через $daysLeft дней';
-    // if (daysLeft % 10 == 1) return '$title через $daysLeft день';
-    // if (daysLeft % 10 < 5 && daysLeft % 10 > 1) return '$title через $daysLeft дня';
-    // return '$title через $daysLeft дней';
   }
 
   Map<String, dynamic> toJson() {
